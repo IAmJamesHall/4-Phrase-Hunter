@@ -49,9 +49,11 @@ class Game {
         if (this.wins > this.losses) {
             finishText = "Congratulations on your win!";
             overlayDiv.classList.add = "win";
-        } else {
+        } else if (this.wins < this.losses) {
             finishText = "Uh oh. Looks like you lost this one";
             overlayDiv.classList.add = "lose";
+        } else {
+            finishText = "Here are your results:"
         }
         overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
         overlayNextButton.style.display = 'none';
