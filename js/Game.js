@@ -28,7 +28,7 @@ class Game {
             } else {
                 overlayDiv.classList.add = "lose";
             }
-            overlayText.innerHTML = `${this.wins} wins, ${this.losses} losses`;
+            overlayText.innerText = `${this.wins} wins, ${this.losses} loses; ${this.roundsPerGame - this.currentRound} rounds left`;
 
             overlayDiv.style.display = '';
             overlayNextButton.style.display = '';
