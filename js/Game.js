@@ -7,33 +7,66 @@ class Game {
         this.phrases = phrases;
         this.activePhrase = null;
         this.currentRound = 1;
-        this.roundsPerPage = 3;
-        this.wins = 1;
-        this.loses = 0;
+        this.roundsPerGame = 3;
+        this.wins = 0;
+        this.losses = 0;
     }
 
-    startGame() {
+
+
+
+    showRoundResults(won) {
+        const overlayDiv = document.querySelector('#overlay');
+        const overlayText = document.querySelector('#game-over-message');
+        const overlayNextButton = document.querySelector('#btn__next');
+        const overlayStartButton = document.querySelector('#btn__start');
+        if (this.currentRound >= this.roundsPerGame) {
+            this.showGameResults();
+        } else {
+            if (won) {
+                overlayDiv.classList.add = "win";
+            } else {
+                overlayDiv.classList.add = "lose";
+            }
+            overlayText.innerText = `${this.wins} wins, ${this.losses} loses; ${this.roundsPerGame - this.currentRound} rounds left`;
+
+            overlayDiv.style.display = '';
+            overlayNextButton.style.display = '';
+            overlayStartButton.style.display = 'none';
+            this.currentRound += 1;
+            overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
+        }
+    }
+
+
+    showGameResults() {
+        const overlayDiv = document.querySelector('#overlay');
+        const overlayText = document.querySelector('#game-over-message');
+        const overlayStartButton = document.querySelector('#btn__start');
+        const overlayNextButton = document.querySelector('#btn__next');
+        overlayStartButton.innerText = "Restart";
+        let finishText = '';
+        if (this.wins > this.losses) {
+            finishText = "Congratulations on your win!";
+            overlayDiv.classList.add = "win";
+        } else {
+            finishText = "Uh oh. Looks like you lost this one";
+            overlayDiv.classList.add = "lose";
+        }
+        overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
+        overlayNextButton.style.display = 'none';
+        overlayStartButton.style.display = '';
+        overlayDiv.style.display = '';
+    }
+
+    /**
+     * hide results overlay, reset all of the round's elements
+     */
+    prepareForNextRound() {
+        //Hide overlay
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none';
-        this.startRound();
-    }
 
-    startRound() {
-        if (this.currentRound <= 3) {
-            const overlay = document.querySelector('#overlay');
-            overlay.style.display = 'none';
-            this.resetRound();
-            this.activePhrase = this.getRandomPhrase();
-            this.activePhrase.addPhraseToDisplay();
-            const round = document.querySelector('.round');
-            round.innerText = `Round ${this.currentRound}`;
-        } else {
-            this.gameOver();
-        }
-        
-    }
-
-    resetRound() {
         //Initialize keyboard
         const keys = document.querySelectorAll('.key');
         for (let key of keys) {
@@ -45,9 +78,18 @@ class Game {
         const lives = document.querySelectorAll('.tries');
         for (let life of lives) {
             life.classList = 'tries';
-            life.setAttribute('src', 'images/liveHeart.png');
+            life.firstElementChild.src = 'images/liveHeart.png';
         }
+
+        //Initialize phrase
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addPhraseToDisplay();
+
+        //Show current round number
+        const round = document.querySelector('.round');
+        round.innerText = `Round ${this.currentRound}`;
     }
+
 
     getRandomPhrase() {
         const numberOfPhrases = this.phrases.length;
@@ -55,30 +97,34 @@ class Game {
         return this.phrases[phraseNumber];
     }
 
-    handleInteraction(key) {
+    handleInteraction(char) {
+        let key = document.querySelector('#' + char);
         key.setAttribute('disabled', 'true');
         const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
         if (matchedLetter) {
             key.className = 'chosen key';
             this.activePhrase.showMatchedLetter(key.innerText);
             if (this.checkForWin()) {
-                this.roundOver(true);
+                this.wins += 1;
+                this.showRoundResults(true);
             }
         } else {
             key.className = 'wrong key';
             this.removeLife();
         }
     }
-
+    /**
+     * removes one life and checks if all lives are gone
+     */
     removeLife() {
         const liveHearts = document.querySelectorAll('.tries:not(.dead)');
         if (liveHearts.length > 1) {
             const dyingHeart = liveHearts[0];
-            dyingHeart.firstElementChild.setAttribute('src', 'images/lostHeart.png');
+            dyingHeart.firstElementChild.src = 'images/lostHeart.png';
             dyingHeart.classList.add('dead');
         } else {
-            this.dead = true;
-            this.gameOver();
+            this.losses += 1;
+            this.showRoundResults(false);
         }
     }
 
@@ -86,47 +132,4 @@ class Game {
         const hiddenLetters = document.querySelectorAll('.hide');
         return hiddenLetters.length === 0;
     }
-
-    roundOver(won) {
-        const overlayDiv = document.querySelector('#overlay');
-        const overlayText = document.querySelector('#game-over-message');
-        const overlayNextButton = document.querySelector('#btn__next');
-        const overlayStartButton = document.querySelector('#btn__start');
-        if (this.currentRound > 3) {
-            this.gameOver(true);
-        } else {
-            if (won) {
-                overlayText.innerText = "Nice job!";
-                overlayDiv.classList.add = "win";
-            } else {
-                overlayText.innerText = `Didn't do so well. You have ${this.roundsPerPage - this.currentRound} more rounds`
-                overlayDiv.classList.add = "lose";
-            }
-            
-            overlayDiv.style.display = '';
-            overlayNextButton.style.display = '';
-            overlayStartButton.style.display = 'none';
-            this.currentRound += 1;
-            overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
-        }
-    }
-
-    gameOver() {
-        const overlayDiv = document.querySelector('#overlay');
-        const overlayText = document.querySelector('#game-over-message');
-        const overlayStartButton = document.querySelector('#btn__start');
-        const overlayNextButton = document.querySelector('#btn__next');
-        overlayStartButton.innerText = "Restart";
-        if (this.wins > this.loses) {
-            const finishText = "Congratulations on your win!";
-            overlayDiv.classList.add = "win";
-        } else {
-            const finishText = "Uh oh. Looks like you lost this one";
-            overlayDiv.classList.add = "lose";
-        }
-        overlayText.innerText = `${this.finishText} (${this.wins} wins, ${this.loses} losses})`;
-        overlayNextButton.style.display = 'none';
-        overlayDiv.style.display = '';
-    }
-
 }

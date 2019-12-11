@@ -28,17 +28,25 @@ const nextRound = document.querySelector('#btn__next');
 nextRound.style.display = 'none';
 startGame.addEventListener('click', () => {
     const game = new Game(createPhraseObjects(phrases));
-    game.startGame();
+    game.prepareForNextRound();
 
     const keyboard = document.querySelector('#qwerty');
     keyboard.addEventListener('click', (event) => {
         if (event.target.className === "key") {
-            game.handleInteraction(event.target);
+            game.handleInteraction(event.target.innerText);
         }
     })
 
     nextRound.addEventListener('click', () => {
-        game.startRound();
+        game.prepareForNextRound();
+    })
+
+    window.addEventListener('keypress', (e) => {
+        let charString = String.fromCharCode(e.which)
+        game.handleInteraction(charString);
+
+
+
     })
 
 })
