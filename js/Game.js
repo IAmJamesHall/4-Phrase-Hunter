@@ -36,14 +36,6 @@ class Game {
             this.currentRound += 1;
             overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
         }
-
-        window.addEventListener('keypress', this.enterKeyCallback(e));
-    }
-
-    enterKeyCallback(e) {
-        if (e.which == 13) {
-            this.prepareForNextRound();
-        }
     }
 
 
@@ -71,8 +63,6 @@ class Game {
      * hide results overlay, reset all of the round's elements
      */
     prepareForNextRound() {
-        window.removeEventListener('keypress', this.enterKeyCallback(e));
-
         //Hide overlay
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none';
@@ -108,21 +98,19 @@ class Game {
     }
 
     handleInteraction(char) {
-        if (char.match(/[a-z]/)) {
-            let key = document.querySelector('#' + char);
-            key.setAttribute('disabled', 'true');
-            const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
-            if (matchedLetter) {
-                key.className = 'chosen key';
-                this.activePhrase.showMatchedLetter(key.innerText);
-                if (this.checkForWin()) {
-                    this.wins += 1;
-                    this.showRoundResults(true);
-                }
-            } else {
-                key.className = 'wrong key';
-                this.removeLife();
+        let key = document.querySelector('#' + char);
+        key.setAttribute('disabled', 'true');
+        const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
+        if (matchedLetter) {
+            key.className = 'chosen key';
+            this.activePhrase.showMatchedLetter(key.innerText);
+            if (this.checkForWin()) {
+                this.wins += 1;
+                this.showRoundResults(true);
             }
+        } else {
+            key.className = 'wrong key';
+            this.removeLife();
         }
     }
     /**

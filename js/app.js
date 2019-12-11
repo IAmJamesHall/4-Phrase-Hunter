@@ -23,25 +23,10 @@ function createPhraseObjects(phrases) {
 }
 
 
-const startGameButton = document.querySelector('#btn__start');
-const nextRoundButton = document.querySelector('#btn__next');
-nextRoundButton.style.display = 'none';
-startGameButton.addEventListener('click', startGame);
-window.addEventListener('keypress', (e) => {
-    if (e.which == 13) {
-        startGame();
-    }
-});
-
-
-
-
-function startGame() {
-    window.removeEventListener('keypress', (e) => {
-        if (e.which == 13) {
-            startGame();
-        }
-    });
+const startGame = document.querySelector('#btn__start');
+const nextRound = document.querySelector('#btn__next');
+nextRound.style.display = 'none';
+startGame.addEventListener('click', () => {
     const game = new Game(createPhraseObjects(phrases));
     game.prepareForNextRound();
 
@@ -55,18 +40,19 @@ function startGame() {
         }
     })
 
-    nextRoundButton.addEventListener('click', () => {
+    nextRound.addEventListener('click', () => {
         game.prepareForNextRound();
     })
 
     window.addEventListener('keypress', (e) => {
-        let charString = String.fromCharCode(e.which);
+        let charString = String.fromCharCode(e.which)
         game.handleInteraction(charString);
+
+
 
     })
 
-
-}
+})
 
 
 
