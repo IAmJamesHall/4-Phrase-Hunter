@@ -10,14 +10,14 @@ class Phrase {
     addPhraseToDisplay() {
         const ul = document.createElement('ul');
         const div = document.querySelector('#phrase');
+        const phraseArray = this.phrase.split('');
 
-        for (letter of this.phrase) {
+        for (let letter of phraseArray) {
+            const li = document.createElement('li');
             if (letter === ' ') {
-                const li = document.createElement('li');
                 li.className = "space";
                 li.textContent = " ";
             } else {
-                const li = document.createElement('li');
                 li.classList = `hide letter ${letter}`;
                 li.textContent = letter;
             }
@@ -28,8 +28,8 @@ class Phrase {
         div.appendChild(ul);
     }
 
-    checkLetter(letterToCheck) {
-        for (letter of this.phrase) {
+    checkForLetter(letterToCheck) {
+        for (let letter of this.phrase) {
             if (letterToCheck === letter) {
                 return true;
             };
@@ -38,7 +38,9 @@ class Phrase {
     }
 
     showMatchedLetter(letter) {
-        letterElements = document.querySelectorAll(`.${letter}`);
-        letterElements.classList = `show letter ${letter}`;
+        const letterElements = document.querySelectorAll(`.${letter}`);
+        for (let element of letterElements) {
+            element.classList = `show letter ${letter}`;
+        }
     }
 }
