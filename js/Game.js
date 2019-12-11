@@ -10,7 +10,64 @@ class Game {
         this.roundsPerGame = 3;
         this.wins = 0;
         this.losses = 0;
+        this._overlay = false;
     }
+
+    /** 
+     * toggles visibility on overlay div
+     * @param {string} showOrHide - "show" or "hide"
+     */
+    set overlay(showOrHide) {
+        if (showOrHide === "hide") {
+            //Hide overlay
+            const overlay = document.querySelector('#overlay');
+            overlay.style.display = 'none';
+
+            //Initialize keyboard
+            const keys = document.querySelectorAll('.key');
+            for (let key of keys) {
+                key.classList = "key";
+                key.removeAttribute('disabled');
+            }
+
+            //Initialize lives
+            const lives = document.querySelectorAll('.tries');
+            for (let life of lives) {
+                life.classList = 'tries';
+                life.firstElementChild.src = 'images/liveHeart.png';
+            }
+
+            //Initialize phrase
+            this.activePhrase = this.getRandomPhrase();
+            this.activePhrase.addPhraseToDisplay();
+
+            //Show current round number
+            const round = document.querySelector('.round');
+            round.innerText = `Round ${this.currentRound}`;
+        } else if (showOrHide === "show") {
+            const overlayDiv = document.querySelector('#overlay');
+            const overlayText = document.querySelector('#game-over-message');
+            const overlayNextButton = document.querySelector('#btn__next');
+            const overlayStartButton = document.querySelector('#btn__start');
+            if (this.currentRound >= this.roundsPerGame) {
+                this.showGameResults();
+            } else {
+                if (won) {
+                    overlayDiv.classList.add = "win";
+                } else {
+                    overlayDiv.classList.add = "lose";
+                }
+                overlayText.innerHTML = `${this.wins} wins, ${this.losses} losses`;
+
+                overlayDiv.style.display = '';
+                overlayNextButton.style.display = '';
+                overlayStartButton.style.display = 'none';
+                this.currentRound += 1;
+                overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
+            }
+        }
+    }
+
 
 
 

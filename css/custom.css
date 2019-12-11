@@ -6,3 +6,9 @@
 #rules p {
     margin-top: 5px;
 }
+
+.small {
+    font-size: 10px;
+    font-weight: lighter;
+    margin-bottom: 5px;
+}
