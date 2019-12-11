@@ -30,6 +30,9 @@ startGame.addEventListener('click', () => {
     const game = new Game(createPhraseObjects(phrases));
     game.prepareForNextRound();
 
+    //hide the rules
+    const rules = document.querySelector('#rules');
+    rules.style.display = 'none';
     const keyboard = document.querySelector('#qwerty');
     keyboard.addEventListener('click', (event) => {
         if (event.target.className === "key") {
