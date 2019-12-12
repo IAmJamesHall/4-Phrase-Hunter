@@ -4,7 +4,7 @@
 
 
 
-/*const phrases = [
+const phrases = [
     "Hello",
     "Goodbye",
     "When it rains, it pours",
@@ -18,12 +18,6 @@
     "Barking up the wrong tree",
     "An Arm and a leg",
     "A fool and his money are soon parted"
-]*/
-
-const phrases = [
-    "Hello",
-    "Goodbye",
-    "When it rains"
 ]
 
 /**
@@ -44,11 +38,6 @@ function createPhraseObjects(phrases) {
     return phraseObjects;
 }
 
-const nextRoundButton = document.querySelector('#btn__next');
-nextRoundButton.style.display = 'none';
 const game = new Game(createPhraseObjects(phrases));
 game.handleKeyboard();
-game.handleButtonPresses();
-
-
-
+game.handleControlButton();

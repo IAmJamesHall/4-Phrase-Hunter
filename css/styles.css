@@ -60,9 +60,7 @@ button {
   cursor: pointer;
 }
 
-#btn__start,
-#btn__next,
-#btn__restart {
+#control-button {
 	width: 200px;
 	margin: 0 auto;
 }
