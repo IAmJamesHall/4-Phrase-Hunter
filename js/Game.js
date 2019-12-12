@@ -43,7 +43,7 @@ class Game {
                 text = "Here are your results:"
             }
             controlButton.innerText = 'Restart';
-        } else { //round is over
+        } else { //else round is over
             if (win) {
                 overlayDiv.classList.add('win');
             } else {
@@ -56,6 +56,14 @@ class Game {
         overlayDiv.style.display = '';
     }
 
+
+    showAnswer() {
+        const hiddenLetters = document.querySelectorAll('li.hide');
+        for (let letter of hiddenLetters) {
+            letter.classList.add('missed-blanks');
+        }
+        setTimeout(() => console.log('timeout complete'), 3000);
+    }
 
     /**
      * hide results overlay, reset all of the round's elements
@@ -194,7 +202,8 @@ class Game {
             dyingHeart.classList.add('dead');
         } else {
             this.losses += 1;
-            this.showResults(false);
+            this.showAnswer();
+            setTimeout(() => this.showResults(false), 3000);
         }
     }
 

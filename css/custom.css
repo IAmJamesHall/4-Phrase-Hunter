@@ -13,5 +13,6 @@
 }
 
 .missed-blanks {
-    background-color: red;
+    background-color: var(--color-lose);
+    color: white;
 }
