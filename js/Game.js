@@ -26,8 +26,6 @@ class Game {
     showRoundResults(won) {
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
-        const overlayNextButton = document.querySelector('#btn__next');
-        const overlayStartButton = document.querySelector('#btn__start');
         if (this.currentRound >= this.roundsPerGame) {
             this.showGameResults();
         } else {
@@ -40,10 +38,8 @@ class Game {
 
 
             overlayDiv.style.display = '';
-            overlayNextButton.style.display = '';
-            overlayStartButton.style.display = 'none';
             this.currentRound += 1;
-            overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
+            document.querySelector('#control-button').innerText = `Continue to Round ${this.currentRound}`;
 
             
         }
@@ -53,15 +49,7 @@ class Game {
     showGameResults() {
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
-        const overlayNextButton = document.querySelector('#btn__next');
-        overlayNextButton.style.display = 'none';
-        const overlayStartButton = document.querySelector('#btn__start');
-        //overlayStartButton.innerText = "Restart";
-
-        const overlayRestartButton = document.querySelector('#btn__restart');
-        overlayRestartButton.style.display = '';
-        
-
+        document.querySelector('#control-button').innerText = 'Restart';
 
         let finishText = '';
         if (this.wins > this.losses) {
@@ -73,11 +61,10 @@ class Game {
         } else {
             finishText = "Here are your results:"
         }
-        overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
-        
-        overlayStartButton.style.display = 'none';
-       
+        overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;   
+        this.currentRound += 1; 
         overlayDiv.style.display = '';
+
     }
 
     /**
@@ -132,11 +119,14 @@ class Game {
         })
     }
 
-    handleButtonPresses() {
-        const game = this;
-        const buttons = document.querySelectorAll('#overlay button');
-        const buttonFunctions = {
-            btn__start: function () {
+    /**
+     * adds event listener and function logic to control button
+     */
+    handleControlButton() {
+        const controlButton = document.querySelector('#control-button');
+        controlButton.addEventListener('click', () => {
+
+            if (this.currentRound === 1) { //game hasn't begun
                 game.prepareForNextRound();
 
                 //hide the rules
@@ -150,18 +140,12 @@ class Game {
                         game.handleInteraction(event.target.innerText);
                     }
                 })
-            },
-            btn__next : function () { game.prepareForNextRound() },
-            btn__restart : function () { location.reload() }
-        }
-
-        for (let button of buttons) {
-            button.addEventListener('click', () => {
-                if (button.style.display != "none") {
-                    buttonFunctions[button.id]();
-                }
-            });
-        }
+            } else if (this.currentRound > this.roundsPerGame) {
+                location.reload();
+            } else {
+                game.prepareForNextRound();
+            }
+        });
     }
 
 
