@@ -2,19 +2,26 @@
  * Project 4 - OOP Game App
  * Game.js */
 
+
+ /** 
+  * TODO:
+  * - on game results screen, set restart button to restart on keypress
+  * - refactor
+  * - add colors
+  *     - add win/lose colors
+ */
+
+
 class Game {
     constructor (phrases) {
-        this.dead = false;
         this.phrases = phrases;
         this.activePhrase = null;
         this.currentRound = 1;
         this.roundsPerGame = 3;
         this.wins = 0;
         this.losses = 0;
+        this.usedPhrases = [];
     }
-
-
-
 
     showRoundResults(won) {
         const overlayDiv = document.querySelector('#overlay');
@@ -41,12 +48,19 @@ class Game {
 
 
     showGameResults() {
-        this.dead = true;
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
-        const overlayStartButton = document.querySelector('#btn__start');
         const overlayNextButton = document.querySelector('#btn__next');
-        overlayStartButton.innerText = "Restart";
+        overlayNextButton.style.display = 'none';
+        const overlayStartButton = document.querySelector('#btn__start');
+        //overlayStartButton.innerText = "Restart";
+
+        const overlayRestartButton = document.createElement('button');
+        overlayRestartButton.innerText = "Restart";
+        overlayRestartButton.addEventListener('click', () => location.reload());
+        overlayDiv.appendChild(overlayRestartButton);
+
+
         let finishText = '';
         if (this.wins > this.losses) {
             finishText = "Congratulations on your win!";
@@ -58,8 +72,8 @@ class Game {
             finishText = "Here are your results:"
         }
         overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
-        overlayNextButton.style.display = 'none';
-        overlayStartButton.style.display = '';
+        
+        overlayStartButton.style.display = 'none';
         overlayStartButton.addEventListener('click', () => location.reload());
         overlayDiv.style.display = '';
     }
@@ -99,7 +113,12 @@ class Game {
     getRandomPhrase() {
         const numberOfPhrases = this.phrases.length;
         const phraseNumber = Math.floor(Math.random()*numberOfPhrases);
-        return this.phrases[phraseNumber];
+        let phrase = this.phrases[phraseNumber];
+        if (this.usedPhrases.includes(phrase)) {
+            phrase = this.getRandomPhrase();
+        }
+        this.usedPhrases.push(phrase);
+        return phrase;
     }
 
     handleInteraction(char) {
