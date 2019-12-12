@@ -21,49 +21,41 @@ class Game {
         this.usedPhrases = [];
     }
 
-    showRoundResults(win) {
+    
+
+    showResults(win) {
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
-        if (this.currentRound >= this.roundsPerGame) {
-            this.showGameResults();
-        } else {
+        const controlButton = document.querySelector('#control-button');
+       this.currentRound += 1;
+
+        let text = ''
+        
+        //if game is over
+        if (this.currentRound >= this.roundsPerGame) { 
+            if (this.wins > this.losses) {
+                text = "Congratulations on your win!<br>";
+                overlayDiv.classList.add('win');
+            } else if (this.wins < this.losses) {
+                text = "Uh oh. Looks like you lost this one";
+                overlayDiv.classList.add('lose');
+            } else {
+                text = "Here are your results:"
+            }
+            controlButton.innerText = 'Restart';
+        } else { //round is over
             if (win) {
                 overlayDiv.classList.add('win');
             } else {
                 overlayDiv.classList.add('lose');
             }
-            overlayText.innerHTML = `${this.wins} wins, ${this.losses} losses`;
-
-
-            overlayDiv.style.display = '';
-            this.currentRound += 1;
-            document.querySelector('#control-button').innerText = `Continue to Round ${this.currentRound}`;
-
-            
+            controlButton.innerHTML = `Continue to Round ${this.currentRound}`;
         }
-    }
-
-
-    showGameResults() {
-        const overlayDiv = document.querySelector('#overlay');
-        const overlayText = document.querySelector('#game-over-message');
-        document.querySelector('#control-button').innerText = 'Restart';
-
-        let finishText = '';
-        if (this.wins > this.losses) {
-            finishText = "Congratulations on your win!";
-            overlayDiv.classList.add('win');
-        } else if (this.wins < this.losses) {
-            finishText = "Uh oh. Looks like you lost this one";
-            overlayDiv.classList.add('lose');
-        } else {
-            finishText = "Here are your results:"
-        }
-        overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;   
-        this.currentRound += 1; 
+        
+        overlayText.innerHTML = `${text} (${this.wins} wins, ${this.losses} losses)`;
         overlayDiv.style.display = '';
-
     }
+
 
     /**
      * hide results overlay, reset all of the round's elements
@@ -170,7 +162,7 @@ class Game {
                 this.activePhrase.showMatchedLetter(key.innerText);
                 if (this.checkForWin()) {
                     this.wins += 1;
-                    this.showRoundResults(true);
+                    this.showResults(true);
                 }
             } else {
                 key.className = 'wrong key';
@@ -202,7 +194,7 @@ class Game {
             dyingHeart.classList.add('dead');
         } else {
             this.losses += 1;
-            this.showRoundResults(false);
+            this.showResults(false);
         }
     }
 
