@@ -30,7 +30,7 @@ class Game {
         if (this.currentRound >= this.roundsPerGame) { //if game is over
             if (this.wins > this.losses) {
                 text = "Congratulations on your win!<br>";
-                overlayDiv.classList.add('win');
+                overlayDiv.classList.add('win'); 
             } else if (this.wins < this.losses) {
                 text = "Uh oh. Looks like you lost this one";
                 overlayDiv.classList.add('lose');
@@ -48,30 +48,30 @@ class Game {
         }
         const winsAndLosses = calculateWinsAndLosses(this);
         overlayText.innerHTML = `${text} (${winsAndLosses})`;
-        overlayDiv.style.display = '';
+        overlayDiv.style.display = ''; //show overlay
 
         /**
-         * accesses a game object's wins/losses and outputs a pretty message
-         * @param {Object} _this - in practice, Game object
+         * accesses a game object's wins/losses and outputs a *pretty* message
+         * @param {Object} _this - Game object
          * @returns {string} number of wins and losses
          */
         function calculateWinsAndLosses(_this) {
-            let wins = "";
-            let losses = "";
+            let winMessage = "";
+            let lossMessage = "";
             //calculate wins
             if (_this.wins != 1) {
-                wins = `wins`;
+                winMessage = `wins`;
             } else {
-                wins = "win";
+                winMessage = "win";
             }
 
             //calculate losses
             if (_this.losses != 1) {
-                losses = "losses";
+                lossMessage = "losses";
             } else {
-                losses = "loss"
+                lossMessage = "loss"
             }
-            return `${_this.wins} ${wins}, ${_this.losses} ${losses}`;
+            return `${_this.wins} ${winMessage}, ${_this.losses} ${lossMessage}`;
 
         }
     }
@@ -86,7 +86,6 @@ class Game {
         for (let letter of hiddenLetters) {
             letter.classList.add('missed-blanks');
         }
-        setTimeout(() => console.log('timeout complete'), 3000);
     }
 
     /**
@@ -173,6 +172,10 @@ class Game {
 
 
 
+    /**
+     * Gets random phrase from `this.phrases`.
+     * If phrase has been used before, it gets another phrase
+     */
     getRandomPhrase() {
         const numberOfPhrases = this.phrases.length;
         const phraseNumber = Math.floor(Math.random()*numberOfPhrases);
@@ -227,6 +230,7 @@ class Game {
         } else {
             this.losses += 1;
             this.showAnswer();
+            //show hidden letters for 3 seconds before showing results
             setTimeout(() => this.showResults(false), 3000);
         }
     }

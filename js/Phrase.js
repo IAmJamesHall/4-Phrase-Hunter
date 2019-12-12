@@ -7,6 +7,9 @@ class Phrase {
         this.phrase = phrase;
     }
 
+    /**
+     * adds this.phrase to display
+     */
     addPhraseToDisplay() {
         const ul = document.createElement('ul');
         const div = document.querySelector('#phrase');
@@ -28,6 +31,10 @@ class Phrase {
         div.appendChild(ul);
     }
 
+    /**
+     * checks for character in phrase
+     * @param {string} letterToCheck - string character to look for in phrase
+     */
     checkForLetter(letterToCheck) {
         for (let letter of this.phrase) {
             if (letterToCheck === letter) {
@@ -37,6 +44,10 @@ class Phrase {
         return false;
     }
 
+    /**
+     * 
+     * @param {string} letter - shows all instances of letter in phrase
+     */
     showMatchedLetter(letter) {
         const letterElements = document.querySelectorAll(`.${letter}`);
         for (let element of letterElements) {
