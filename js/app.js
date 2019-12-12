@@ -4,7 +4,7 @@
 
 
 
-const phrases = [
+/* const phrases = [
     "Hello",
     "Goodbye",
     "When it rains, it pours",
@@ -18,7 +18,13 @@ const phrases = [
     "Barking up the wrong tree",
     "An Arm and a leg",
     "A fool and his money are soon parted"
-]
+] */
+
+const phrases = [
+    "Hello",
+    "Goodbye",
+    "When it rains, it pours"
+];
 
 /**
  * returns an array of Phrase objects

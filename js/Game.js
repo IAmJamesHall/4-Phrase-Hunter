@@ -23,16 +23,16 @@ class Game {
         this.usedPhrases = [];
     }
 
-    showRoundResults(won) {
+    showRoundResults(win) {
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
         if (this.currentRound >= this.roundsPerGame) {
             this.showGameResults();
         } else {
-            if (won) {
-                overlayDiv.classList.add = "win";
+            if (win) {
+                overlayDiv.classList.add('win');
             } else {
-                overlayDiv.classList.add = "lose";
+                overlayDiv.classList.add('lose');
             }
             overlayText.innerHTML = `${this.wins} wins, ${this.losses} losses`;
 
@@ -54,10 +54,10 @@ class Game {
         let finishText = '';
         if (this.wins > this.losses) {
             finishText = "Congratulations on your win!";
-            overlayDiv.classList.add = "win";
+            overlayDiv.classList.add('win');
         } else if (this.wins < this.losses) {
             finishText = "Uh oh. Looks like you lost this one";
-            overlayDiv.classList.add = "lose";
+            overlayDiv.classList.add('lose');
         } else {
             finishText = "Here are your results:"
         }
@@ -74,6 +74,7 @@ class Game {
         //Hide overlay
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none';
+        overlay.classList = "start";
 
         //Initialize keyboard
         const keys = document.querySelectorAll('.key');
