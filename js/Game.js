@@ -5,8 +5,6 @@
 
  /** 
   * TODO:
-  * - on game results screen, set restart button to restart on keypress
-  * - refactor
   * - add colors
   *     - add win/lose colors
  */
