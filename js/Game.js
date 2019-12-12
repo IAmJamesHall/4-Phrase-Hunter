@@ -90,54 +90,7 @@ class Game {
         return this._overlay;
     }
 
-
-
-
-
-    showRoundResults(won) {
-        
-    }
-
-
-    showGameResults() {
-        const overlayDiv = document.querySelector('#overlay');
-        const overlayText = document.querySelector('#game-over-message');
-        const overlayStartButton = document.querySelector('#btn__start');
-        const overlayNextButton = document.querySelector('#btn__next');
-        
-    }
-
-    /**
-     * hide results overlay, reset all of the round's elements
-     */
-    prepareForNextRound() {
-        //Hide overlay
-        const overlay = document.querySelector('#overlay');
-        overlay.style.display = 'none';
-
-        //Initialize keyboard
-        const keys = document.querySelectorAll('.key');
-        for (let key of keys) {
-            key.classList = "key";
-            key.removeAttribute('disabled');
-        }
-
-        //Initialize lives
-        const lives = document.querySelectorAll('.tries');
-        for (let life of lives) {
-            life.classList = 'tries';
-            life.firstElementChild.src = 'images/liveHeart.png';
-        }
-
-        //Initialize phrase
-        this.activePhrase = this.getRandomPhrase();
-        this.activePhrase.addPhraseToDisplay();
-
-        //Show current round number
-        const round = document.querySelector('.round');
-        round.innerText = `Round ${this.currentRound}`;
-    }
-
+ 
 
     getRandomPhrase() {
         const numberOfPhrases = this.phrases.length;
@@ -172,7 +125,15 @@ class Game {
             dyingHeart.classList.add('dead');
         } else {
             this.losses += 1;
-            this.showRoundResults(false);
+            this.overlay = "show";
+        }
+    }
+
+    resetLives() {
+        const liveHearts = document.querySelectorAll('.tries');
+        for (let heart of liveHearts) {
+            heart.classList = "tries";
+            heart.firstElementChild.src = 'images/liveHeart.png';
         }
     }
 
