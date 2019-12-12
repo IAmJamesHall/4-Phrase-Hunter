@@ -4,7 +4,7 @@
 
 
 
-/* const phrases = [
+ const phrases = [
     "Hello",
     "Goodbye",
     "When it rains, it pours",
@@ -18,13 +18,8 @@
     "Barking up the wrong tree",
     "An Arm and a leg",
     "A fool and his money are soon parted"
-] */
-
-const phrases = [
-    "Hello",
-    "Goodbye",
-    "When it rains, it pours"
 ];
+
 
 /**
  * returns an array of Phrase objects
@@ -44,6 +39,8 @@ function createPhraseObjects(phrases) {
     return phraseObjects;
 }
 
+
+//initialize the game and set up keyboard/button event listeners
 const game = new Game(createPhraseObjects(phrases));
 game.handleKeyboard();
 game.handleControlButton();

@@ -1,14 +1,7 @@
 /* Treehouse FSJS Techdegree
  * Project 4 - OOP Game App
+ * James Hall
  * Game.js */
-
-
- /** 
-  * TODO:
-  * - add colors
-  *     - add win/lose colors
- */
-
 
 class Game {
     constructor (phrases) {
@@ -23,16 +16,18 @@ class Game {
 
     
 
+    /**
+     * shows results based on stage of the game
+     * @param {boolean} win - was the last round won or lost
+     */
     showResults(win) {
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
         const controlButton = document.querySelector('#control-button');
        this.currentRound += 1;
-
-        let text = ''
         
-        //if game is over
-        if (this.currentRound >= this.roundsPerGame) { 
+       let text = ''
+        if (this.currentRound >= this.roundsPerGame) { //if game is over
             if (this.wins > this.losses) {
                 text = "Congratulations on your win!<br>";
                 overlayDiv.classList.add('win');
@@ -51,12 +46,41 @@ class Game {
             }
             controlButton.innerHTML = `Continue to Round ${this.currentRound}`;
         }
-        
-        overlayText.innerHTML = `${text} (${this.wins} wins, ${this.losses} losses)`;
+        const winsAndLosses = calculateWinsAndLosses(this);
+        overlayText.innerHTML = `${text} (${winsAndLosses})`;
         overlayDiv.style.display = '';
+
+        /**
+         * accesses a game object's wins/losses and outputs a pretty message
+         * @param {Object} _this - in practice, Game object
+         * @returns {string} number of wins and losses
+         */
+        function calculateWinsAndLosses(_this) {
+            let wins = "";
+            let losses = "";
+            //calculate wins
+            if (_this.wins != 1) {
+                wins = `wins`;
+            } else {
+                wins = "win";
+            }
+
+            //calculate losses
+            if (_this.losses != 1) {
+                losses = "losses";
+            } else {
+                losses = "loss"
+            }
+            return `${_this.wins} ${wins}, ${_this.losses} ${losses}`;
+
+        }
     }
 
 
+    /**
+     * shows letters that were not found
+     * (used at end of round)
+     */
     showAnswer() {
         const hiddenLetters = document.querySelectorAll('li.hide');
         for (let letter of hiddenLetters) {
@@ -98,16 +122,16 @@ class Game {
     }
 
 
+    /**
+     * If overlay is present, any keyboard key will click the button.
+     * If game is active, run keys through handleInteraction()
+     */
     handleKeyboard() {
         window.addEventListener('keypress', (e) => {
             //find screen state
             if (this.checkForOverlay()) {
-                const buttons = document.querySelectorAll('#overlay button');
-                for (let button of buttons) {
-                    if (button.style.display != "none") {
-                        button.click();
-                    }
-                }
+                const controlButton = document.querySelector('#control-button');
+                controlButton.click();
             } else {
                 let charString = String.fromCharCode(e.which);
                 if (charString.match(/[a-z]/)) {
@@ -160,8 +184,11 @@ class Game {
         return phrase;
     }
 
+    /**
+     * takes character input and checks it against the activePhrase
+     * @param {string} char - single character from keyboard (onscreen or physical)
+     */
     handleInteraction(char) {
-        if (this.checkForOverlay() === false) {
             let key = document.querySelector('#' + char);
             key.setAttribute('disabled', 'true');
             const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
@@ -176,15 +203,12 @@ class Game {
                 key.className = 'wrong key';
                 this.removeLife();
             }
-        } else {
-            if (this.checkForEnter(char) === true) {
-                this.prepareForNextRound();
-            }
-            
-        }
     }
 
 
+    /**
+     * checks if results overlay is shown
+     */
     checkForOverlay() {
         const overlay = document.querySelector('#overlay');
         return overlay.style.display != "none";
@@ -207,8 +231,15 @@ class Game {
         }
     }
 
+    /**
+     * checks if all letters in phrase have been discovered
+     */
     checkForWin() {
         const hiddenLetters = document.querySelectorAll('.hide');
         return hiddenLetters.length === 0;
     }
+
+
+
+
 }

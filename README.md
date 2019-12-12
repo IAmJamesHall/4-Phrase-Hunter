@@ -16,4 +16,3 @@ I completely wrote all `.js` files, as well as `custom.css`.
 - in addition to onscreen keyboard, the physical keyboard works as well
 - game has been expanded to 3 rounds.
     - game shows current progress at end of each round
-- 
