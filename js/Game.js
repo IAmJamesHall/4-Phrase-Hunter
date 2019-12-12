@@ -58,10 +58,9 @@ class Game {
         const overlayStartButton = document.querySelector('#btn__start');
         //overlayStartButton.innerText = "Restart";
 
-        const overlayRestartButton = document.createElement('button');
-        overlayRestartButton.innerText = "Restart";
-        overlayRestartButton.id = "btn__restart";
-        overlayDiv.appendChild(overlayRestartButton);
+        const overlayRestartButton = document.querySelector('#btn__restart');
+        overlayRestartButton.style.display = '';
+        
 
 
         let finishText = '';
@@ -153,7 +152,7 @@ class Game {
                 })
             },
             btn__next : function () { game.prepareForNextRound() },
-            btn__reset : function () { location.reload() }
+            btn__restart : function () { location.reload() }
         }
 
         for (let button of buttons) {

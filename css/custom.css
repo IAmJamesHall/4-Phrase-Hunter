@@ -6,3 +6,8 @@
 #rules p {
     margin-top: 5px;
 }
+
+#keyboardHint {
+    font-size: 10px;
+    margin-top: 5px;
+}
