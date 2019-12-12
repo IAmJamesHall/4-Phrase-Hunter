@@ -4,6 +4,7 @@
 
 class Game {
     constructor (phrases) {
+        this.dead = false;
         this.phrases = phrases;
         this.activePhrase = null;
         this.currentRound = 1;
@@ -40,6 +41,7 @@ class Game {
 
 
     showGameResults() {
+        this.dead = true;
         const overlayDiv = document.querySelector('#overlay');
         const overlayText = document.querySelector('#game-over-message');
         const overlayStartButton = document.querySelector('#btn__start');
@@ -58,6 +60,7 @@ class Game {
         overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
         overlayNextButton.style.display = 'none';
         overlayStartButton.style.display = '';
+        overlayStartButton.addEventListener('click', () => location.reload());
         overlayDiv.style.display = '';
     }
 
@@ -100,21 +103,45 @@ class Game {
     }
 
     handleInteraction(char) {
-        let key = document.querySelector('#' + char);
-        key.setAttribute('disabled', 'true');
-        const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
-        if (matchedLetter) {
-            key.className = 'chosen key';
-            this.activePhrase.showMatchedLetter(key.innerText);
-            if (this.checkForWin()) {
-                this.wins += 1;
-                this.showRoundResults(true);
+        if (this.checkForOverlay() === false) {
+            let key = document.querySelector('#' + char);
+            key.setAttribute('disabled', 'true');
+            const matchedLetter = this.activePhrase.checkForLetter(key.innerText);
+            if (matchedLetter) {
+                key.className = 'chosen key';
+                this.activePhrase.showMatchedLetter(key.innerText);
+                if (this.checkForWin()) {
+                    this.wins += 1;
+                    this.showRoundResults(true);
+                }
+            } else {
+                key.className = 'wrong key';
+                this.removeLife();
             }
         } else {
-            key.className = 'wrong key';
-            this.removeLife();
+            if (this.checkForEnter(char) === true) {
+                this.prepareForNextRound();
+            }
+            
         }
     }
+
+    checkForEnter(char) {
+        if (overlay.style.display != "none") {
+            if (char.charCodeAt(0) === 13) {//if this is an enter key
+                return true
+            }
+        }
+        return false;
+    }
+
+
+    checkForOverlay() {
+        const overlay = document.querySelector('#overlay');
+        return overlay.style.display != "none";
+    }
+
+
     /**
      * removes one life and checks if all lives are gone
      */
