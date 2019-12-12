@@ -43,6 +43,8 @@ class Game {
             overlayStartButton.style.display = 'none';
             this.currentRound += 1;
             overlayNextButton.innerText = `Continue to Round ${this.currentRound}`;
+
+            
         }
     }
 
@@ -57,6 +59,7 @@ class Game {
 
         const overlayRestartButton = document.createElement('button');
         overlayRestartButton.innerText = "Restart";
+        overlayRestartButton.id = "btn__restart";
         overlayRestartButton.addEventListener('click', () => location.reload());
         overlayDiv.appendChild(overlayRestartButton);
 
@@ -75,6 +78,7 @@ class Game {
         
         overlayStartButton.style.display = 'none';
         overlayStartButton.addEventListener('click', () => location.reload());
+       
         overlayDiv.style.display = '';
     }
 
@@ -110,6 +114,28 @@ class Game {
     }
 
 
+    handleKeyboard() {
+        window.addEventListener('keypress', (e) => {
+            //find screen state
+            if (this.checkForOverlay()) {
+                const buttons = document.querySelectorAll('#overlay button');
+                for (let button of buttons) {
+                    if (button.style.display != "none") {
+                        button.click();
+                    }
+                }
+            } else {
+                let charString = String.fromCharCode(e.which);
+                if (charString.match(/[a-z]/)) {
+                    this.handleInteraction(charString);
+                }
+            }
+            
+        })
+    }
+
+
+
     getRandomPhrase() {
         const numberOfPhrases = this.phrases.length;
         const phraseNumber = Math.floor(Math.random()*numberOfPhrases);
@@ -143,15 +169,6 @@ class Game {
             }
             
         }
-    }
-
-    checkForEnter(char) {
-        if (overlay.style.display != "none") {
-            if (char.charCodeAt(0) === 13) {//if this is an enter key
-                return true
-            }
-        }
-        return false;
     }
 
 

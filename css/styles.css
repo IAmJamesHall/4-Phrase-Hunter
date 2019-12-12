@@ -61,7 +61,8 @@ button {
 }
 
 #btn__start,
-#btn__next {
+#btn__next,
+#btn__restart {
 	width: 200px;
 	margin: 0 auto;
 }

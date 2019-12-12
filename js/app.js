@@ -25,6 +25,11 @@ const phrasesCopy = [
     "A fool and his money are soon parted"
 ]
 
+/**
+ * returns an array of Phrase objects
+ * @param {array} phrases - array of phrases
+ * @returns {array} array of phrase objects
+ */
 function createPhraseObjects(phrases) {
     const phraseObjects = [];
     for (phrase of phrases) {
@@ -42,31 +47,28 @@ function createPhraseObjects(phrases) {
 const startGame = document.querySelector('#btn__start');
 const nextRound = document.querySelector('#btn__next');
 nextRound.style.display = 'none';
-startGame.addEventListener('click', () => {
-    const game = new Game(createPhraseObjects(phrases));
+const game = new Game(createPhraseObjects(phrases));
+game.handleKeyboard();
+startGame.addEventListener('click', () => {   
     game.prepareForNextRound();
 
     //hide the rules
     const rules = document.querySelector('#rules');
     rules.style.display = 'none';
+
+    //onscreen keyboard 
     const keyboard = document.querySelector('#qwerty');
     keyboard.addEventListener('click', (event) => {
         if (event.target.className === "key") {
             game.handleInteraction(event.target.innerText);
         }
-    })
+    });
 
     nextRound.addEventListener('click', () => {
         game.prepareForNextRound();
     })
 
-    window.addEventListener('keypress', (e) => {
-        let charString = String.fromCharCode(e.which)
-        game.handleInteraction(charString);
-
-
-
-    })
+    
 
 })
 
