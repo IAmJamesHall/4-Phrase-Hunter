@@ -27,7 +27,7 @@ class Game {
        this.currentRound += 1;
         
        let text = ''
-        if (this.currentRound >= this.roundsPerGame) { //if game is over
+        if (this.currentRound > this.roundsPerGame) { //if game is over
             if (this.wins > this.losses) {
                 text = "Congratulations on your win!<br>";
                 overlayDiv.classList.add('win'); 
