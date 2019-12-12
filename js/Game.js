@@ -38,6 +38,7 @@ class Game {
             }
             overlayText.innerHTML = `${this.wins} wins, ${this.losses} losses`;
 
+
             overlayDiv.style.display = '';
             overlayNextButton.style.display = '';
             overlayStartButton.style.display = 'none';
@@ -60,7 +61,6 @@ class Game {
         const overlayRestartButton = document.createElement('button');
         overlayRestartButton.innerText = "Restart";
         overlayRestartButton.id = "btn__restart";
-        overlayRestartButton.addEventListener('click', () => location.reload());
         overlayDiv.appendChild(overlayRestartButton);
 
 
@@ -77,7 +77,6 @@ class Game {
         overlayText.innerText = `${finishText} (${this.wins} wins, ${this.losses} losses)`;
         
         overlayStartButton.style.display = 'none';
-        overlayStartButton.addEventListener('click', () => location.reload());
        
         overlayDiv.style.display = '';
     }
@@ -132,6 +131,38 @@ class Game {
             }
             
         })
+    }
+
+    handleButtonPresses() {
+        const game = this;
+        const buttons = document.querySelectorAll('#overlay button');
+        const buttonFunctions = {
+            btn__start: function () {
+                game.prepareForNextRound();
+
+                //hide the rules
+                const rules = document.querySelector('#rules');
+                rules.style.display = 'none';
+
+                //onscreen keyboard 
+                const keyboard = document.querySelector('#qwerty');
+                keyboard.addEventListener('click', (event) => {
+                    if (event.target.className === "key") {
+                        game.handleInteraction(event.target.innerText);
+                    }
+                })
+            },
+            btn__next : function () { game.prepareForNextRound() },
+            btn__reset : function () { location.reload() }
+        }
+
+        for (let button of buttons) {
+            button.addEventListener('click', () => {
+                if (button.style.display != "none") {
+                    buttonFunctions[button.id]();
+                }
+            });
+        }
     }
 
 

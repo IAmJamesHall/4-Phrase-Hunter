@@ -3,13 +3,8 @@
  * app.js */
 
 
-const phrases = [
-    "Hello",
-    "Goodbye",
-    "When it rains, it pours",
-    "hi"
-]
-const phrasesCopy = [
+
+/*const phrases = [
     "Hello",
     "Goodbye",
     "When it rains, it pours",
@@ -23,6 +18,12 @@ const phrasesCopy = [
     "Barking up the wrong tree",
     "An Arm and a leg",
     "A fool and his money are soon parted"
+]*/
+
+const phrases = [
+    "Hello",
+    "Goodbye",
+    "When it rains"
 ]
 
 /**
@@ -43,34 +44,11 @@ function createPhraseObjects(phrases) {
     return phraseObjects;
 }
 
-
-const startGame = document.querySelector('#btn__start');
-const nextRound = document.querySelector('#btn__next');
-nextRound.style.display = 'none';
+const nextRoundButton = document.querySelector('#btn__next');
+nextRoundButton.style.display = 'none';
 const game = new Game(createPhraseObjects(phrases));
 game.handleKeyboard();
-startGame.addEventListener('click', () => {   
-    game.prepareForNextRound();
-
-    //hide the rules
-    const rules = document.querySelector('#rules');
-    rules.style.display = 'none';
-
-    //onscreen keyboard 
-    const keyboard = document.querySelector('#qwerty');
-    keyboard.addEventListener('click', (event) => {
-        if (event.target.className === "key") {
-            game.handleInteraction(event.target.innerText);
-        }
-    });
-
-    nextRound.addEventListener('click', () => {
-        game.prepareForNextRound();
-    })
-
-    
-
-})
+game.handleButtonPresses();
 
 
 
