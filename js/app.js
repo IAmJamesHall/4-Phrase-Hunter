@@ -20,7 +20,6 @@
     "A fool and his money are soon parted"
 ];
 
-
 /**
  * returns an array of Phrase objects
  * @param {array} phrases - array of phrases

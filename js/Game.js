@@ -6,12 +6,14 @@
 class Game {
     constructor (phrases) {
         this.phrases = phrases;
+        this.missed = 0;
         this.activePhrase = null;
         this.currentRound = 1;
         this.roundsPerGame = 3;
         this.wins = 0;
         this.losses = 0;
         this.usedPhrases = [];
+        
     }
 
     
@@ -89,7 +91,9 @@ class Game {
     }
 
     /**
-     * hide results overlay, reset all of the round's elements
+     * Hide results overlay, reset all of the round's elements.
+     * This function corresponds to the `startGame()` function defined
+     * by the rubric, but this function is reused over multiple rounds.
      */
     prepareForNextRound() {
         //Hide overlay
@@ -110,6 +114,7 @@ class Game {
             life.classList = 'tries';
             life.firstElementChild.src = 'images/liveHeart.png';
         }
+        this.missed = 0;
 
         //Initialize phrase
         this.activePhrase = this.getRandomPhrase();
@@ -222,12 +227,15 @@ class Game {
      * removes one life and checks if all lives are gone
      */
     removeLife() {
+        //replace live heart with a dead heart 
         const liveHearts = document.querySelectorAll('.tries:not(.dead)');
-        if (liveHearts.length > 1) {
-            const dyingHeart = liveHearts[0];
-            dyingHeart.firstElementChild.src = 'images/lostHeart.png';
-            dyingHeart.classList.add('dead');
-        } else {
+        const dyingHeart = liveHearts[0];
+        dyingHeart.firstElementChild.src = 'images/lostHeart.png';
+        dyingHeart.classList.add('dead');
+
+        if (this.missed < 4) { //if we still have lives left, remove 1
+            this.missed += 1;
+        } else { // if we're dead, show the answer
             this.losses += 1;
             this.showAnswer();
             //show hidden letters for 3 seconds before showing results
