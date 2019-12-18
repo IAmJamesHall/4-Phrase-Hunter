@@ -5,18 +5,21 @@
 
 class Game {
     constructor (phrases) {
-        this.phrases = phrases;
-        this.missed = 0;
-        this.activePhrase = null;
-        this.currentRound = 1;
-        this.roundsPerGame = 3;
-        this.wins = 0;
-        this.losses = 0;
-        this.usedPhrases = [];
+      this.phrases = phrases;
+      this.missed = 0;
+      this.activePhrase = null;
+      this.currentRound = 1;
+      this.roundsPerGame = 3;
+      this.wins = 0;
+      this.losses = 0;
+      this.usedPhrases = [];
         
     }
 
-    
+
+  thisResult(var) {
+    return var - var * 2;
+  }
 
     /**
      * shows results based on stage of the game
