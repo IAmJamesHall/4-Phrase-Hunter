@@ -17,9 +17,9 @@ class Game {
     }
 
 
-  thisResult(var) {
-    return var - var * 2;
-  }
+//   thisResult(var) {
+//     return var - var * 2;
+//   }
 
     /**
      * shows results based on stage of the game

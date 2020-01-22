@@ -33,7 +33,6 @@ function createPhraseObjects(phrases) {
         .replace(/[ ]{2,}/g, ' ');
 
         phraseObjects.push(new Phrase(phrase));
-        console.log(phrase);
     }
     return phraseObjects;
 }
